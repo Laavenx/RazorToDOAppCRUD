@@ -1,0 +1,18 @@
+﻿@page
+@model RazorToDoApp.Pages.PizzaModel
+
+@{
+}
+
+<div class="col-4 mb-5">
+	@foreach (var pizza in Model.fakePizzaDB){
+		<img src=@($"~/images/Pizzas/{pizza.ImageTitle}.png") class="w-100" asp-append-version="true" />
+		<a class="btn btn-primary mt-1" asp-area="" asp-page="Checkout/Checkout"
+			asp-route-ImageTitle="@pizza.ImageTitle"
+			asp-route-PizzaPrice="@pizza.FinalPrice">Get dis
+		</a>
+	}
+</div>
+
+
+<a class=nav-link text-dark" asp-area="" asp-page="Forms/CustomPizza">Create</a>

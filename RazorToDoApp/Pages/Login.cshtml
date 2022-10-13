@@ -1,0 +1,18 @@
+﻿@page
+@model RazorToDoApp.Pages.LoginModel
+@{
+}
+
+<%
+fname=Request.Cookies("firstname")
+response.write("Firstname=" & fname)
+%>
+<div class="text-center container">
+	<h1>Create Your Own Pizza!</h1>
+	<form method="post" >
+		<input type="text" asp-for="Credentials.UserName"/>Login
+		<br/>
+		<input type="password" asp-for="Credentials.Password"/>Password
+		<button class="btn btn-primary mt-1" type="submit">Create</button>
+	</form>
+</div>
