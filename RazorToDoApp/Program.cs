@@ -1,17 +1,33 @@
 using RazorToDoApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication;
+using RazorToDoApp.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<RazorToDoAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RazorToDoAppContext") ?? throw new InvalidOperationException("Connection string 'RazorToDoAppContext' not found.")));
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.LoginPath = "/Login";
+        options.AccessDeniedPath = "/AccessDenied";
+        options.Cookie.Name = "MyCookieAuth";
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MustBeLoggedIn",
+        policy => policy.RequireClaim("UserType", "User"));
+    options.AddPolicy("AdminOnly",
+        policy => policy.RequireClaim("UserType", "Admin"));
 });
 
 var app = builder.Build();
@@ -38,6 +54,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
