@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RazorToDoApp.Data;
 using RazorToDoApp.Models;
+using BCrypt.Net;
 
 namespace RazorToDoApp.Pages
 {
@@ -18,19 +19,25 @@ namespace RazorToDoApp.Pages
         {
             _context = context;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            Response.Cookies.Append("MyCookie", "value1");
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Tasks");
+            }
+
+            return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return Page();
 
-            if (Credentials.UserName == "12345" && Credentials.Password == "password")
+            var user = _context.User.Where(u => u.UserName == Credentials.UserName).FirstOrDefault();
+            if (user != null && BCrypt.Net.BCrypt.Verify(Credentials.Password, user.Password)) 
             {
                 var claims = new List<Claim> {
-                    new Claim(ClaimTypes.Name, "12345"),
-                    new Claim(ClaimTypes.Email, "Email@wp.pl"),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim("UserType", "User")
                 };
                 var identity = new ClaimsIdentity(claims, "MyCookieAuth");
@@ -40,10 +47,9 @@ namespace RazorToDoApp.Pages
 
                 return RedirectToPage("Index");
             }
-            //var something = context.Students.Add(emptyStudent);
-            var cookieValue = Request.Cookies["MyCookie"];
-            Response.Cookies.Append("MyCookie", "value1");
-            //return RedirectToPage("Index");
+
+            ViewData["credentialsValid"] = "Incorrect username or password";
+
             return Page();
         }
     }

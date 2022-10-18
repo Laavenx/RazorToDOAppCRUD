@@ -2,7 +2,7 @@
 
 namespace RazorToDoApp.Models
 {
-    public class DbToDoLists
+    public class DbToDoTask
     {
         public int Id { get; set; }
         [MaxLength(32)]

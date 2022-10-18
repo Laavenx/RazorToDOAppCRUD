@@ -1,0 +1,44 @@
+﻿.task {
+    background-color: rgba(152, 152, 152, 0.28);
+    border-top: 4px solid rgba(175, 168, 185, 0.43);
+    margin-top: 8px;
+    height: 30px;
+}
+
+.task-name-form {
+    width: 85%;
+}
+
+.task-name {
+    width: 70%;
+    margin-left: 4px;
+    border: none;
+    background-image: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.task-delete {
+    width: 15%;
+}
+
+.task-edit {
+    width: 15%;
+}
+
+.task-button {
+    background: none;
+    color: #0d6efd;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    text-decoration: underline;
+    display: inline-flex;
+    align-items: flex-start;
+}
+
+.task-button:hover {
+    color: #3D8BFA;
+}

@@ -2,3 +2,31 @@
 @model RazorToDoApp.Pages.RegisterModel
 @{
 }
+
+<div class="container border" style="padding:20px">
+	<h1 class="d-flex justify-content-center">Register to TaskManager App</h1>
+	<form method="post" class="d-flex justify-content-center flex-column">
+		<div class="text-danger d-flex justify-content-center">@ViewData["UserExists"]</div>
+		<div class="text-danger d-flex justify-content-center" asp-validation-summary="ModelOnly"></div>
+		<div class="form-group row d-flex justify-content-center">
+			<div class="col-1">
+				<label asp-for="Credentials.UserName">Username</label>
+			</div>
+			<div class="col-5">
+				<input type="text" asp-for="Credentials.UserName" class="form-control" />
+			</div>
+			<span class="text-danger d-flex justify-content-center" asp-validation-for="Credentials.UserName"></span>
+		</div>
+		<div class="form-group row d-flex justify-content-center">
+			<div class="col-1">
+				<label asp-for="Credentials.Password">Password</label>
+			</div>
+			<div class="col-5">
+				<input type="password" asp-for="Credentials.Password" class="form-control" />
+			</div>
+			<span class="text-danger d-flex justify-content-center" asp-validation-for="Credentials.Password"></span>
+		</div>
+
+		<button class="btn btn-primary mt-1 w-25 align-self-center" type="submit">Register</button>
+	</form>
+</div>

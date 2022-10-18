@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography.X509Certificates;
 
 namespace RazorToDoApp.Models
 {
-    public class DbUser
+    public class RegisterCredentials
     {
         [Required]
-        public int Id { get; set; }
-        [Required]
+        [MinLength(5)]
         [MaxLength(32)]
         public string UserName { get; set; }
         [Required]
+        [MinLength(5)]
+        [MaxLength(32)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
-        public ICollection<DbToDoTask> ToDoLists { get; set; }
     }
 }

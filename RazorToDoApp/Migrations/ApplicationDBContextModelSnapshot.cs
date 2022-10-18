@@ -21,7 +21,7 @@ namespace RazorToDoApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("RazorToDoApp.Models.DbToDoLists", b =>
+            modelBuilder.Entity("RazorToDoApp.Models.DbToDoTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace RazorToDoApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ToDoLists");
+                    b.ToTable("ToDoTask");
                 });
 
             modelBuilder.Entity("RazorToDoApp.Models.DbUser", b =>
@@ -66,10 +66,10 @@ namespace RazorToDoApp.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("RazorToDoApp.Models.DbToDoLists", b =>
+            modelBuilder.Entity("RazorToDoApp.Models.DbToDoTask", b =>
                 {
                     b.HasOne("RazorToDoApp.Models.DbUser", "User")
-                        .WithMany("DbToDoLists")
+                        .WithMany("ToDoLists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -79,7 +79,7 @@ namespace RazorToDoApp.Migrations
 
             modelBuilder.Entity("RazorToDoApp.Models.DbUser", b =>
                 {
-                    b.Navigation("DbToDoLists");
+                    b.Navigation("ToDoLists");
                 });
 #pragma warning restore 612, 618
         }

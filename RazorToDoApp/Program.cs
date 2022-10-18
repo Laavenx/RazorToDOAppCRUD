@@ -1,8 +1,5 @@
 using RazorToDoApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication;
-using RazorToDoApp.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
