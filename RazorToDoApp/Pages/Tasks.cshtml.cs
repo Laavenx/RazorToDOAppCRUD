@@ -1,8 +1,10 @@
+using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RazorToDoApp.Data;
 using RazorToDoApp.Models;
 
@@ -18,14 +20,24 @@ namespace RazorToDoApp.Pages
         {
             _context = context;
         }
-        public void OnGet()
+        public void GetTasks()
         {
             var taskList = _context.ToDoTask.Where(t => t.User.Id == Int32
                 .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList();
             ViewData["taskList"] = taskList;
         }
+        public void OnGet()
+        {
+            GetTasks();
+        }
         public async Task<IActionResult> OnPost()
         {
+            if (!ModelState.IsValid) 
+            {
+                GetTasks();
+                return Page();
+            }
+
             var contextUser = _context.User
                 .Where(u => u.Id == Int32
                 .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).FirstOrDefault();
@@ -36,8 +48,7 @@ namespace RazorToDoApp.Pages
 
             await _context.SaveChangesAsync();
 
-            var taskList = _context.ToDoTask.Where(t => t.User == contextUser).ToList();
-            ViewData["taskList"] = taskList;
+            GetTasks();
 
             return Page();
         }
@@ -50,8 +61,7 @@ namespace RazorToDoApp.Pages
 
             if (contextTask?.User.Id != contextUser.Id)
             {
-                var taskList = _context.ToDoTask.Where(t => t.User == contextUser).ToList();
-                ViewData["taskList"] = taskList;
+                GetTasks();
                 return Page();
             }
 
@@ -62,6 +72,20 @@ namespace RazorToDoApp.Pages
         }
         public async Task<IActionResult> OnPostEdit(string name, int id)
         {
+            if (name.IsNullOrEmpty())
+            {
+                GetTasks();
+                ViewData["taskEditError"] = "Edited task name is empty";
+                return Page();
+            }
+
+            if (name.Length > 30)
+            {
+                GetTasks();
+                ViewData["taskEditError"] = "Edited task name is too long";
+                return Page();
+            }
+
             var contextUser = _context.User
                 .Where(u => u.Id == Int32
                 .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).FirstOrDefault();
@@ -69,8 +93,7 @@ namespace RazorToDoApp.Pages
 
             if (contextTask?.User.Id != contextUser.Id)
             {
-                var taskList = _context.ToDoTask.Where(t => t.User == contextUser).ToList();
-                ViewData["taskList"] = taskList;
+                GetTasks();
                 return Page();
             }
 

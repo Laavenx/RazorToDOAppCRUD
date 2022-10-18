@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="~/css/Task.css" asp-append-version="true" />
 }
 <form method="post" class="d-flex justify-content-center flex-column">
+	<div class="text-danger d-flex justify-content-center" asp-validation-summary="ModelOnly"></div>
 	<div class="form-group row d-flex justify-content-center">
 		<div class="col-1">
 			<label asp-for="Task.Name">Name</label>
@@ -16,13 +17,15 @@
 		</div>
 	</div>
 	<button class="btn btn-primary mt-1 w-25 align-self-center" type="submit">Add Task</button>
+	<span class="text-danger d-flex justify-content-center" asp-validation-for="Task.Name"></span>
+	<span class="text-danger d-flex justify-content-center">@ViewData["taskEditError"]</span>
 </form>
 
 @foreach (var task in ViewData["taskList"] as IEnumerable<RazorToDoApp.Models.DbToDoTask>)
 {
 	<div class="d-flex task">
 		<form method="post" asp-page-handler="Edit" class="d-flex task-name-form">
-			<input type="text" name="name" value="@task.Name" class="task-name" />
+			<input type="text" name="name" value="@task.Name" class="task-name" maxlength="30" required/>
 			<input type="hidden" name="id" value="@task.Id" />
 			<button class="task-button">Change name</button>
 		</form>
