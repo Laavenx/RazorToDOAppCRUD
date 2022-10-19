@@ -9,5 +9,5 @@ App made for learning core concepts of ASP.NET Razor.
 * Create, Update, Delete, View user tasks
 * Error validation
 
-## Usage
+## Building
 Open the RazorToDoApp.sln file using VS and compile the project.
