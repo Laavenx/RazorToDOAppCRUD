@@ -35,17 +35,16 @@ namespace RazorToDoApp.Pages
             var user = _context.User.Where(u => u.UserName == Credentials.UserName).FirstOrDefault();
             if (user != null && BCrypt.Net.BCrypt.Verify(Credentials.Password, user.Password)) 
             {
-                var claims = new List<Claim> {
+                var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim("UserType", "User")
-                };
-                var identity = new ClaimsIdentity(claims, "MyCookieAuth");
-                var principal = new ClaimsPrincipal(identity);
+                }, "MyCookieAuth"));
+                
+                await HttpContext.SignInAsync("MyCookieAuth", claims);
 
-                await HttpContext.SignInAsync("MyCookieAuth", principal);
-
-                return RedirectToPage("Index");
+                return RedirectToPage("/Tasks");
             }
 
             ViewData["credentialsValid"] = "Incorrect username or password";

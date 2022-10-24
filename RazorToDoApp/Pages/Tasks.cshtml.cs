@@ -70,9 +70,9 @@ namespace RazorToDoApp.Pages
 
             return RedirectToPage("/Tasks");
         }
-        public async Task<IActionResult> OnPostEdit(string name, int id)
+        public async Task<IActionResult> OnPostEdit(string? name, int id)
         {
-            if (name.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(name))
             {
                 GetTasks();
                 ViewData["taskEditError"] = "Edited task name is empty";

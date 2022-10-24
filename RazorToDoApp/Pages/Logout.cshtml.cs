@@ -8,7 +8,7 @@ namespace RazorToDoApp.Pages
     {
         public async Task<IActionResult> OnPostAsync()
         {
-            HttpContext.SignOutAsync("MyCookieAuth");
+            await HttpContext.SignOutAsync("MyCookieAuth");
             return RedirectToPage("/Index");
         }
     }
