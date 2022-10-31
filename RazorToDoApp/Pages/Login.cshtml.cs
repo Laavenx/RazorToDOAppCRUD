@@ -1,12 +1,9 @@
-using System.Net.Mail;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using RazorToDoApp.Data;
 using RazorToDoApp.Models;
-using BCrypt.Net;
 
 namespace RazorToDoApp.Pages
 {
@@ -14,8 +11,8 @@ namespace RazorToDoApp.Pages
     {
         [BindProperty]
         public LoginCredentials Credentials { get; set; }
-        private readonly ApplicationDBContext _context;
-        public LoginModel(ApplicationDBContext context)
+        private readonly AppDbContext _context;
+        public LoginModel(AppDbContext context)
         {
             _context = context;
         }
@@ -32,7 +29,7 @@ namespace RazorToDoApp.Pages
         {
             if (!ModelState.IsValid) return Page();
 
-            var user = _context.User.Where(u => u.UserName == Credentials.UserName).FirstOrDefault();
+            var user = _context.Users.Where(u => u.UserName == Credentials.UserName).FirstOrDefault();
             if (user != null && BCrypt.Net.BCrypt.Verify(Credentials.Password, user.Password)) 
             {
                 var claims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]

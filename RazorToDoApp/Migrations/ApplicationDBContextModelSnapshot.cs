@@ -9,7 +9,7 @@ using RazorToDoApp.Data;
 
 namespace RazorToDoApp.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
+    [DbContext(typeof(Data.AppDbContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RazorToDoApp.Data;
-using RazorToDoApp.Models;
+using RazorToDoApp.Entities;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
@@ -18,24 +18,24 @@ namespace RazorToDoApp.Tests
 {
     internal class MockFunctions
     {
-        public async Task<ApplicationDBContext> GetDatabaseContext()
+        public async Task<AppDbContext> GetDatabaseContext()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDBContext>()
+            var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            var databaseContext = new ApplicationDBContext(options);
+            var databaseContext = new AppDbContext(options);
             databaseContext.Database.EnsureCreated();
-            if (await databaseContext.User.CountAsync() <= 0)
+            if (await databaseContext.Users.CountAsync() <= 0)
             {
-                var user = new DbUser()
+                var user = new AppUser()
                 {
                     Id = 1,
                     UserName = "12345",
                     Password = "$2a$12$kRKCACHHQfkm7puDe9OgI.9E2opXQWBA7iq6JTzR/BNIEEwviwP/m"
                 };
-                databaseContext.User.Add(user);
-                databaseContext.ToDoTask.Add(
-                new DbToDoTask()
+                databaseContext.Users.Add(user);
+                databaseContext.Tasks.Add(
+                new AppTask()
                 {
                     Id = 1,
                     Name = "MockTask1",

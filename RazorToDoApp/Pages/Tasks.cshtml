@@ -1,6 +1,7 @@
 ﻿@page
 @model RazorToDoApp.Pages.TasksModel
 @{
+	@using RazorToDoApp.Entities;
 }
 
 @section Head {
@@ -21,7 +22,7 @@
 	<span class="text-danger d-flex justify-content-center">@ViewData["taskEditError"]</span>
 </form>
 
-@foreach (var task in ViewData["taskList"] as IEnumerable<RazorToDoApp.Models.DbToDoTask>)
+@foreach (var task in ViewData["taskList"] as IEnumerable<AppTask>)
 {
 	<div class="d-flex task">
 		<form method="post" asp-page-handler="Edit" class="d-flex task-name-form">
