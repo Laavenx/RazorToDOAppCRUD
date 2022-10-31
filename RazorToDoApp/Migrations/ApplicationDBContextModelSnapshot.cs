@@ -9,7 +9,7 @@ using RazorToDoApp.Data;
 
 namespace RazorToDoApp.Migrations
 {
-    [DbContext(typeof(Data.AppDbContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace RazorToDoApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("RazorToDoApp.Models.DbToDoTask", b =>
+            modelBuilder.Entity("RazorToDoApp.Entities.AppTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,10 +41,10 @@ namespace RazorToDoApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ToDoTask");
+                    b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("RazorToDoApp.Models.DbUser", b =>
+            modelBuilder.Entity("RazorToDoApp.Entities.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,12 +63,12 @@ namespace RazorToDoApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RazorToDoApp.Models.DbToDoTask", b =>
+            modelBuilder.Entity("RazorToDoApp.Entities.AppTask", b =>
                 {
-                    b.HasOne("RazorToDoApp.Models.DbUser", "User")
+                    b.HasOne("RazorToDoApp.Entities.AppUser", "User")
                         .WithMany("ToDoLists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -77,7 +77,7 @@ namespace RazorToDoApp.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RazorToDoApp.Models.DbUser", b =>
+            modelBuilder.Entity("RazorToDoApp.Entities.AppUser", b =>
                 {
                     b.Navigation("ToDoLists");
                 });

@@ -18,10 +18,10 @@ namespace RazorToDoApp.Pages
         {
             _context = context;
         }
-        public async void GetTasks()
+        public void GetTasks()
         {
-            var taskList = await _context.Tasks.Where(t => t.User.Id == Int32
-                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+            var taskList = _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList();
             ViewData["taskList"] = taskList;
         }
         public void OnGet()
