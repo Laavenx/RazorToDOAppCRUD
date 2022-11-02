@@ -14,6 +14,7 @@ namespace RazorToDoApp.Pages
         {
             _context = context;
         }
+
         public IActionResult OnGet()
         {
             if (User.Identity.IsAuthenticated)
@@ -23,6 +24,7 @@ namespace RazorToDoApp.Pages
 
             return Page();
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return Page();

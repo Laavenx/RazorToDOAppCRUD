@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,21 +19,19 @@ namespace RazorToDoApp.Pages
         {
             _context = context;
         }
-        public void GetTasks()
+
+        public async Task OnGet()
         {
-            var taskList = _context.Tasks.Where(t => t.User.Id == Int32
-                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList();
-            ViewData["taskList"] = taskList;
+            ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
-        public void OnGet()
-        {
-            GetTasks();
-        }
+
         public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid) 
             {
-                GetTasks();
+                ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
                 return Page();
             }
 
@@ -46,10 +45,12 @@ namespace RazorToDoApp.Pages
 
             await _context.SaveChangesAsync();
 
-            GetTasks();
+            ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
 
             return Page();
         }
+
         public async Task<IActionResult> OnPostDelete(int id)
         {
             var contextUser = _context.Users
@@ -59,7 +60,8 @@ namespace RazorToDoApp.Pages
 
             if (contextTask?.User.Id != contextUser.Id)
             {
-                GetTasks();
+                ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
                 return Page();
             }
 
@@ -68,18 +70,21 @@ namespace RazorToDoApp.Pages
 
             return RedirectToPage("/Tasks");
         }
+
         public async Task<IActionResult> OnPostEdit(string? name, int id)
         {
             if (string.IsNullOrEmpty(name))
             {
-                GetTasks();
+                ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
                 ViewData["taskEditError"] = "Edited task name is empty";
                 return Page();
             }
 
             if (name.Length > 30)
             {
-                GetTasks();
+                ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
                 ViewData["taskEditError"] = "Edited task name is too long";
                 return Page();
             }
@@ -91,7 +96,8 @@ namespace RazorToDoApp.Pages
 
             if (contextTask?.User.Id != contextUser.Id)
             {
-                GetTasks();
+                ViewData["taskList"] = await _context.Tasks.Where(t => t.User.Id == Int32
+                .Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
                 return Page();
             }
 
